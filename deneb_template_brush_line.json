@@ -26,7 +26,7 @@
     "dataset": [
       {
         "key": "__0__",
-        "name": "Timestamp",
+        "name": "Date/Time",
         "description": "Any Date or Date/Time field",
         "kind": "column",
         "type": "dateTime"
@@ -139,3 +139,4 @@
     }
   ]
 }
+
