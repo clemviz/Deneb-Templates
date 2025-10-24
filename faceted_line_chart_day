@@ -1,0 +1,192 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "information": {
+      "uuid": "d9542bb5-66a3-4c97-ba19-26cb006432e3",
+      "generated": "2025-10-24T11:43:21.639Z",
+      "previewImageBase64PNG": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+      "name": "Faceted line chart per Day - Value by Time",
+      "description": "[No Description Provided]",
+      "author": "Clement Villalard"
+    },
+    "deneb": {
+      "build": "1.8.2.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    },
+    "config": "{\n  \"view\": {\n    \"stroke\": \"transparent\"\n  },\n  \"font\": \"Segoe UI\",\n  \"arc\": {},\n  \"area\": {\n    \"line\": true,\n    \"opacity\": 0.6\n  },\n  \"bar\": {},\n  \"line\": {\n    \"strokeWidth\": 3,\n    \"strokeCap\": \"round\",\n    \"strokeJoin\": \"round\"\n  },\n  \"point\": {\n    \"filled\": true,\n    \"size\": 75\n  },\n  \"rect\": {},\n  \"text\": {\n    \"font\": \"Segoe UI\",\n    \"fontSize\": 12,\n    \"fill\": \"#716E76\"\n  },\n  \"axis\": {\n    \"ticks\": false,\n    \"grid\": false,\n    \"domain\": false,\n    \"labelColor\": \"#716E76\",\n    \"labelFontSize\": 12,\n    \"titleFont\": \"din\",\n    \"titleColor\": \"#192229\",\n    \"titleFontSize\": 16,\n    \"titleFontWeight\": \"normal\"\n  },\n  \"axisQuantitative\": {\n    \"tickCount\": 3,\n    \"grid\": true,\n    \"gridColor\": \"#CFC493\",\n    \"gridDash\": [\n      1,\n      5\n    ],\n    \"labelFlush\": false\n  },\n  \"axisX\": {\n    \"labelPadding\": 5\n  },\n  \"axisY\": {\n    \"labelPadding\": 10\n  },\n  \"header\": {\n    \"titleFont\": \"Segoe UI\",\n    \"titleFontSize\": 16,\n    \"titleColor\": \"black\",\n    \"titlePadding\":30,\n    \"labelFont\": \"Segoe UI\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"grey\"\n  },\n  \"legend\": {\n    \"titleFont\": \"Segoe UI\",\n    \"titleFontWeight\": \"bold\",\n    \"titleColor\": \"#716E76\",\n    \"labelFont\": \"Segoe UI\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"#716E76\",\n    \"symbolType\": \"circle\",\n    \"symbolSize\": 75\n  }\n}",
+    "dataset": [
+      {
+        "key": "__0__",
+        "name": "Date",
+        "description": "Date Field",
+        "kind": "column",
+        "type": "dateTime"
+      },
+      {
+        "key": "__1__",
+        "name": "Full Weekday Name",
+        "description": "⚠️Must be Full Name",
+        "kind": "column",
+        "type": "text"
+      },
+      {
+        "key": "__2__",
+        "name": "Value",
+        "description": "Value or Metric",
+        "kind": "column",
+        "type": "numeric"
+      },
+      {
+        "key": "__3__",
+        "name": "Time",
+        "description": "Time field",
+        "kind": "column",
+        "type": "dateTime"
+      }
+    ]
+  },
+  "data": {
+    "name": "dataset"
+  },
+  // Create the figures for small multiples
+  "facet": {
+    "field": "__1__",
+    "title": "Average Value by Time per Day of the Week",
+    "type": "ordinal",
+    "sort": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ],
+    "header": {
+      "labelFontWeight": "bold"
+    }
+  },
+  "spec": {
+    "width": 140,
+    "height": 450,
+    "layer": [
+      // layer of the transparent daily lines
+      {
+        "mark": {
+          "type": "line",
+          "color": {
+            "expr": "pbiColor(0)"
+          },
+          "opacity": 0.25,
+          "strokeWidth": 0.5
+        },
+        "encoding": {
+          "x": {
+            "field": "__3__",
+            "type": "temporal",
+            "axis": {
+              "title": null,
+              "format": "HH",
+              "formatType": "pbiFormat",
+              "ticks": false
+            }
+          },
+          "y": {
+            "field": "__2__",
+            "type": "quantitative",
+            "title": "__2__",
+            "axis": {
+              "ticks": true,
+              "tickCount": 10,
+              "gridColor": "lightgrey",
+              "gridDash": [
+                4,
+                0
+              ],
+              "gridOpacity": 0.4
+            }
+          },
+          "detail": {
+            "field": "__0__",
+            "type": "temporal"
+          }
+        }
+      },
+      // layer of the thick average line
+      {
+        "transform": [
+          {
+            "aggregate": [
+              {
+                "op": "mean",
+                "field": "__2__",
+                "as": "Average"
+              }
+            ],
+            "groupby": [
+              "__1__",
+              "__3__"
+            ]
+          },
+          {
+            "sort": [
+              {
+                "field": "__3__",
+                "order": "ascending"
+              }
+            ]
+          }
+        ],
+        "mark": {
+          "type": "line",
+          "tooltip": true,
+          "color": {
+            "expr": "pbiColor(0)"
+          },
+          "strokeWidth": 4
+        },
+        "encoding": {
+          "x": {
+            "field": "__3__",
+            "type": "temporal",
+            "axis": {
+              "title": null,
+              "format": "HH",
+              "formatType": "pbiFormat",
+              "ticks": false
+            }
+          },
+          "y": {
+            "field": "Average",
+            "type": "quantitative"
+          },
+          "tooltip": [
+            {
+              "field": "__3__",
+              "type": "ordinal",
+              "title": "__3__",
+              "format": "hh:mm",
+              "formatType": "pbiFormat"
+            },
+            {
+              "field": "Average",
+              "type": "quantitative",
+              "format": "#,#.##",
+              "formatType": "pbiFormat"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
