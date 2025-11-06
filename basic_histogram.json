@@ -26,13 +26,6 @@
     "config": "{\n  \"view\": {\n    \"stroke\": \"transparent\"\n  },\n  \"font\": \"Segoe UI\",\n  \"arc\": {},\n  \"area\": {\n    \"line\": true,\n    \"opacity\": 0.6\n  },\n  \"bar\": {},\n  \"line\": {\n    \"strokeWidth\": 3,\n    \"strokeCap\": \"round\",\n    \"strokeJoin\": \"round\"\n  },\n  \"point\": {\n    \"filled\": true,\n    \"size\": 75\n  },\n  \"rect\": {},\n  \"text\": {\n    \"font\": \"Segoe UI\",\n    \"fontSize\": 12,\n    \"fill\": \"#716E76\"\n  },\n  \"axis\": {\n    \"ticks\": true,\n    \"grid\": false,\n    \"domain\": false,\n    \"labelColor\": \"#716E76\",\n    \"labelFontSize\": 12,\n    \"titleFont\": \"din\",\n    \"titleColor\": \"#192229\",\n    \"titleFontSize\": 16,\n    \"titleFontWeight\": \"normal\"\n  },\n  \"axisQuantitative\": {\n    \"tickCount\": 3,\n    \"grid\": true,\n    \"gridColor\": \"#EDEDED\",\n    \"gridDash\": [\n      1,\n      5\n    ],\n    \"labelFlush\": false\n  },\n  \"axisX\": {\n    \"labelPadding\": 5\n  },\n  \"axisY\": {\n    \"labelPadding\": 10\n  },\n  \"header\": {\n    \"titleFont\": \"din\",\n    \"titleFontSize\": 16,\n    \"titleColor\": \"#192229\",\n    \"labelFont\": \"Segoe UI\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"#716E76\"\n  },\n  \"legend\": {\n    \"titleFont\": \"Segoe UI\",\n    \"titleFontWeight\": \"bold\",\n    \"titleColor\": \"#716E76\",\n    \"labelFont\": \"Segoe UI\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"#716E76\",\n    \"symbolType\": \"circle\",\n    \"symbolSize\": 75\n  }\n}",
     "dataset": [
       {
-        "key": "__1__",
-        "name": "Group By Field",
-        "description": "This field determines how data is grouped or binned before aggregation.\nNB: You can drag and drop more fields to aggregate at the required level",
-        "kind": "column",
-        "type": "text"
-      },
-      {
         "key": "__0__",
         "name": "Metric",
         "description": "",
