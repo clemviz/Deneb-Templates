@@ -34,7 +34,7 @@
       },
       {
         "key": "__1__",
-        "name": "Cons",
+        "name": "Value",
         "description": "Value",
         "kind": "measure",
         "type": "numeric"
