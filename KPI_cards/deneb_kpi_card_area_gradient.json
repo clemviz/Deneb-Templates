@@ -1,0 +1,170 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "information": {
+      "uuid": "6b921e85-967d-4003-8951-545203344a00",
+      "generated": "2026-01-12T14:55:57.897Z",
+      "previewImageBase64PNG": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+      "name": "deneb_kpi_card_area_gradient",
+      "description": "KPI Card with area chart (gradient)",
+      "author": "Clement Villalard"
+    },
+    "deneb": {
+      "build": "1.8.2.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    },
+    "config": "{\n  \"view\": {\n    \"stroke\": \"transparent\"\n  },\n  \"font\": \"Segoe UI\",\n  \"arc\": {},\n  \"area\": {\n    \"line\": true,\n    \"opacity\": 0.6\n  },\n  \"bar\": {},\n  \"line\": {\n    \"strokeWidth\": 3,\n    \"strokeCap\": \"round\",\n    \"strokeJoin\": \"round\"\n  },\n  \"point\": {\n    \"filled\": true,\n    \"size\": 75\n  },\n  \"rect\": {},\n  \"text\": {\n    \"font\": \"Segoe UI\",\n    \"fontSize\": 12,\n    \"fill\": \"#716E76\"\n  },\n  \"axis\": {\n    \"ticks\": false,\n    \"grid\": false,\n    \"domain\": false,\n    \"labelColor\": \"#716E76\",\n    \"labelFontSize\": 12,\n    \"titleFont\": \"din\",\n    \"titleColor\": \"#192229\",\n    \"titleFontSize\": 16,\n    \"titleFontWeight\": \"normal\"\n  },\n  \"axisQuantitative\": {\n    \"tickCount\": 3,\n    \"grid\": true,\n    \"gridColor\": \"#CFC493\",\n    \"gridDash\": [\n      1,\n      5\n    ],\n    \"labelFlush\": false\n  },\n  \"axisX\": {\n    \"labelPadding\": 5\n  },\n  \"axisY\": {\n    \"labelPadding\": 10\n  },\n  \"header\": {\n    \"titleFont\": \"din\",\n    \"titleFontSize\": 16,\n    \"titleColor\": \"#192229\",\n    \"labelFont\": \"Segoe UI\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"#716E76\"\n  },\n  \"legend\": {\n    \"titleFont\": \"Segoe UI\",\n    \"titleFontWeight\": \"bold\",\n    \"titleColor\": \"#716E76\",\n    \"labelFont\": \"Segoe UI\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"#716E76\",\n    \"symbolType\": \"circle\",\n    \"symbolSize\": 75\n  }\n}",
+    "dataset": [
+      {
+        "key": "__0__",
+        "name": "Year-Month",
+        "description": "Ideally, field with the standard format \"YYYY-MM\" or first date of the month.",
+        "kind": "column",
+        "type": "dateTime"
+      },
+      {
+        "key": "__1__",
+        "name": "Cons",
+        "description": "Value",
+        "kind": "measure",
+        "type": "numeric"
+      }
+    ]
+  },
+  "data": {
+    "name": "dataset"
+  },
+  "spacing": 0,
+  "bounds": "flush",
+  "vconcat": [
+    {
+      "width": 250,
+      "height": 10,
+      "layer": [
+        {
+          "transform": [
+            {
+              "aggregate": [
+                {
+                  "op": "sum",
+                  "field": "__1__",
+                  "as": "Total"
+                }
+              ]
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "fontSize": 28,
+            "fontWeight": "bold",
+            "color": "#000000",
+            "dy": -30
+          },
+          "encoding": {
+            "text": {
+              "field": "Total",
+              "type": "quantitative",
+              "format": ",.0f"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "width": 250,
+      "height": 60,
+      "transform": [
+        {
+          "aggregate": [
+            {
+              "op": "sum",
+              "field": "__1__",
+              "as": "Total"
+            }
+          ],
+          "groupby": [
+            "__0__"
+          ]
+        }
+      ],
+      "layer": [
+        {
+          "mark": {
+            "type": "area",
+            "interpolate": "cardinal",
+            "tension": 0.5,
+            "tooltip": true,
+            "line": {
+              "color": "orangered"
+            },
+            "color": {
+              "x1": 1,
+              "y1": 1,
+              "x2": 1,
+              "y2": 0,
+              "gradient": "linear",
+              "stops": [
+                {
+                  "offset": 0,
+                  "color": "white"
+                },
+                {
+                  "offset": 1,
+                  "color": "orangered"
+                }
+              ]
+            }
+          },
+          "encoding": {
+            "x": {
+              "field": "__0__",
+              "type": "nominal",
+              "axis": {
+                "labelAngle": 0,
+                "labelFontSize": 9,
+                "title": null,
+                "format": "MMM yy",
+                "formatType": "pbiFormat",
+                "labelOverlap": true
+              },
+              "sort": {
+                "field": "__0__",
+                "order": "ascending"
+              }
+            },
+            "y": {
+              "field": "Total",
+              "type": "quantitative",
+              "axis": null
+            },
+            "tooltip": [
+              {
+                "field": "__0__",
+                "format": "MMM yy",
+                "formatType": "pbiFormat",
+                "type": "nominal",
+                "title": "__0__"
+              },
+              {
+                "field": "Total",
+                "type": "quantitative",
+                "title": "__1__",
+                "format": ",.0f"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
