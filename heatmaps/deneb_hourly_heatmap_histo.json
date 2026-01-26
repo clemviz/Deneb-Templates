@@ -1,0 +1,294 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "information": {
+      "uuid": "00fe0d19-77d5-49ac-989e-df0637128747",
+      "generated": "2026-01-26T15:24:23.492Z",
+      "previewImageBase64PNG": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+      "name": "Hourly Heatmap & Histogram",
+      "description": "Hourly Heatmap & Histogram",
+      "author": "Clement Villalard"
+    },
+    "deneb": {
+      "build": "1.8.2.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    },
+    "config": "{\n  \"view\": {\n    \"stroke\": \"transparent\"\n  },\n  \"font\": \"Segoe UI\",\n  \"arc\": {},\n  \"area\": {\n    \"line\": true,\n    \"opacity\": 0.6\n  },\n  \"bar\": {},\n  \"line\": {\n    \"strokeWidth\": 0.5,\n    \"strokeCap\": \"round\",\n    \"strokeJoin\": \"round\",\n    \"grid\":true\n      },\n  \"point\": {\n    \"filled\": true,\n    \"size\": 75\n  },\n  \"rect\": {},\n  \"text\": {\n    \"font\": \"Segoe UI\",\n    \"fontSize\": 12,\n    \"fill\": \"#716E76\"\n  },\n  \"axis\": {\n    \"ticks\": false,\n    \"grid\": false,\n    \"domain\": false,\n    \"labelColor\": \"#716E76\",\n    \"labelFontSize\": 12,\n    \"titleFont\": \"din\",\n    \"titleColor\": \"#192229\",\n    \"titleFontSize\": 16,\n    \"titleFontWeight\": \"normal\"\n  },\n  \"axisQuantitative\": {\n    \"tickCount\": 3,\n    \"grid\": true,\n    \"gridColor\": \"#EDEDED\",\n    \"gridDash\": [\n      1,\n      5\n    ],\n    \"labelFlush\": false\n  },\n  \"axisX\": {\n    \"labelPadding\": 5\n  },\n  \"axisY\": {\n    \"labelPadding\": 10\n  },\n  \"header\": {\n    \"titleFont\": \"din\",\n    \"titleFontSize\": 16,\n    \"titleColor\": \"#192229\",\n    \"labelFont\": \"Segoe UI\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"#716E76\"\n  },\n  \"legend\": {\n    \"titleFont\": \"Segoe UI\",\n    \"titleFontWeight\": \"bold\",\n    \"titleColor\": \"#716E76\",\n    \"labelFont\": \"Segoe UI\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"#716E76\",\n    \"symbolType\": \"circle\",\n    \"symbolSize\": 75\n  }\n}",
+    "dataset": [
+      {
+        "key": "__0__",
+        "name": "Date",
+        "description": "Date Field",
+        "kind": "column",
+        "type": "dateTime"
+      },
+      {
+        "key": "__1__",
+        "name": "Hour",
+        "description": "Hour Field",
+        "kind": "column",
+        "type": "numeric"
+      },
+      {
+        "key": "__2__",
+        "name": "Value",
+        "description": "Metric",
+        "kind": "measure",
+        "type": "numeric"
+      }
+    ]
+  },
+  "data": {
+    "name": "dataset"
+  },
+  "background": "white",
+  "params": [
+    {
+      "name": "scheme_name",
+      "value": "spectral"
+    },
+    {
+      "name": "corner_radius_value",
+      "value": 3
+    }
+  ],
+  "transform": [
+    {
+      "calculate": "year(datum['__0__'])",
+      "as": "Year"
+    },
+    {
+      "calculate": "timeFormat(datum['__0__'], '%b')",
+      "as": "Month"
+    },
+    {
+      "calculate": "timeFormat(datum['__0__'], '%B')",
+      "as": "Month Name"
+    },
+    {
+      "calculate": "timeFormat(datum['__0__'], '%e')",
+      "as": "Day of Month"
+    },
+    {
+      "calculate": "timeFormat(datum['__0__'], '%a')",
+      "as": "Weekday Name"
+    },
+    {
+      "calculate": "timeFormat(datum['__0__'], '%A')",
+      "as": "Weekday Name Long"
+    },
+    {
+      "calculate": "timeFormat(datum['__0__'], '%b %y')",
+      "as": "Month Formatted"
+    }
+  ],
+  "vconcat": [ // Vertical concatenation: top chart + bottom chart
+    {
+      // --- Bottom Chart: brush/selector ---
+      "view": {
+        "stroke": null
+      },
+      "title": {
+        "text": "Distribution",
+        "anchor": "middle",
+        "subtitlePadding": 10,
+        "subtitle": "Use the brush to highlight hours",
+        "subtitleColor": "gray"
+      },
+      "mark": {
+        "type": "bar",
+        "binSpacing": 0
+      },
+      "encoding": {
+        "x": {
+          "bin": {
+            "maxbins": 50 // Adjust number of bins as needed here
+          },
+          "field": "__2__",
+          "type": "quantitative",
+          "axis": {
+            "title": "__2__",
+            "titleAnchor": "end",
+            "grid": false,
+            "labelOverlap": true,
+            "labelSeparation": 30
+          }
+        },
+        "y": {
+          "aggregate": "count",
+          "type": "quantitative",
+          "axis": {
+            "title": "Count",
+            "titleAnchor": "end",
+            "titleAngle": 0,
+            "titlePadding": -15,
+            "grid": false,
+            "orient": "left",
+            "format": "#,#",
+            "formatType": "pbiFormat",
+            "tickCount": 5 // Adjust the number of ticks as needed here
+          }
+        },
+        "color": {
+          "bin": {
+            "maxbins": 50
+          },
+          "legend": null,
+          "field": "__2__",
+          "type": "quantitative",
+          "scale": {
+            "scheme": {
+              "expr": "scheme_name"
+            },
+            "reverse": true
+          }
+        }
+      },
+      "params": [
+        {
+          "name": "brush", // Name of the selection parameter
+          "select": {
+            "type": "interval",
+            "mark": {
+              "fill": "grey",
+              "fillOpacity": 0.1,
+              "stroke": "grey",
+              "strokeOpacity": 0.5
+            }, // Interval selection (drag over X-axis)
+            "encodings": [
+              "x"
+            ] // Only select along the X-axis
+          }
+        }
+      ],
+      "width": 420,
+      "height": 80 // Small overview chart
+    },
+    {
+      "title": {
+        "text": "Heatmap",
+        "anchor": "middle",
+        "subtitle": "Hours show the start of each hour period",
+        "subtitlePadding": 10,
+        "subtitleColor": "gray"
+      },
+      // --- Top Chart: Heatmap (rect highlighted by brush) ---
+      "mark": {
+        "type": "rect",
+        "cornerRadius": {
+          "expr": "corner_radius_value"
+        },
+        "tooltip": true
+      },
+      "encoding": {
+        "detail": {
+          "field": "__2__",
+          "type": "quantitative"
+        },
+        "row": {
+          "field": "Month Formatted",
+          "title": null,
+          "sort": {
+            "field": "__0__"
+          },
+          "header": {
+            "labelAngle": 0,
+            "labelAlign": "left",
+            "labelAnchor": "end",
+            "labelFontWeight": "bold"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "__0__",
+            "type": "temporal",
+            "format": "dd/MM/yyyy",
+            "formatType": "pbiFormat"
+          },
+          {
+            "field": "Month Name",
+            "title": "Month",
+            "type": "nominal"
+          },
+          {
+            "field": "Weekday Name Long",
+            "title": "Weekday",
+            "type": "nominal"
+          },
+          {
+            "field": "__2__",
+            "type": "quantitative",
+            "format": "#,#",
+            "formatType": "pbiFormat"
+          }
+        ],
+        "x": {
+          "field": "__1__",
+          "title": "__1__",
+          "type": "ordinal",
+          "sort": {
+            "field": "__1__"
+          },
+          "scale": {
+            "padding": 0.1
+          },
+          "axis": {
+            "orient": "top",
+            "labelAngle": 0,
+            "titleAnchor": "start",
+            "titlePadding": 10
+          } // No title on top chart
+        },
+        "y": {
+          "field": "Day of Month", // Y-axis uses Demand_kW
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "padding": 0.2
+          },
+          "axis": {
+            "labelOverlap": "greedy",
+            "labelSeparation": 20,
+            "format": "d",
+            "formatType": "pbiFormat"
+          }
+        },
+        "color": {
+          "aggregate": "sum",
+          "field": "__2__",
+          "legend": null,
+          "type": "quantitative",
+          "scale": {
+            "scheme": {
+              "expr": "scheme_name"
+            },
+            "reverse": true
+          }
+        },
+        "opacity": {
+          "condition": {
+            "param": "brush",
+            "value": 1
+          },
+          "value": 0.1
+        }
+      },
+      "width": {
+        "step": 20
+      }, // Chart width
+      "height": {
+        "step": 10
+      } // Chart height
+    }
+  ]
+}
