@@ -216,6 +216,12 @@
             "formatType": "pbiFormat"
           },
           {
+            "field": "__1__",
+            "type": "temporal",
+            "format": "#",
+            "formatType": "pbiFormat"
+          },
+          {
             "field": "Month Name",
             "title": "Month",
             "type": "nominal"
