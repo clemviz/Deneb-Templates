@@ -1,0 +1,239 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "information": {
+      "uuid": "354e6898-a4d9-48b8-86df-4dda6c58f8f0",
+      "generated": "2026-01-30T15:46:30.854Z",
+      "previewImageBase64PNG": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+      "name": "area_chart_custom_tooltip_1",
+      "description": "[No Description Provided]",
+      "author": "Clement Villalard"
+    },
+    "deneb": {
+      "build": "1.8.2.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    },
+    "config": "{\r\n  \"view\": {\r\n    \"stroke\": \"transparent\"\r\n  },\r\n  \"font\": \"Segoe UI\",\r\n  \"arc\": {},\r\n  \"area\": {\r\n    \"line\": true,\r\n    \"opacity\": 0.6\r\n  },\r\n  \"bar\": {},\r\n  \"line\": {\r\n    \"strokeWidth\": 0.5,\r\n    \"strokeCap\": \"round\",\r\n    \"strokeJoin\": \"round\",\r\n    \"grid\":true\r\n      },\r\n  \"point\": {\r\n    \"filled\": true,\r\n    \"size\": 75\r\n  },\r\n  \"rect\": {},\r\n  \"text\": {\r\n    \"font\": \"Segoe UI\",\r\n    \"fontSize\": 12,\r\n    \"fill\": \"#716E76\"\r\n  },\r\n  \"axis\": {\r\n    \"ticks\": false,\r\n    \"grid\": false,\r\n    \"domain\": false,\r\n    \"labelColor\": \"#716E76\",\r\n    \"labelFontSize\": 12,\r\n    \"titleFont\": \"din\",\r\n    \"titleColor\": \"#192229\",\r\n    \"titleFontSize\": 16,\r\n    \"titleFontWeight\": \"normal\"\r\n  },\r\n  \"axisQuantitative\": {\r\n    \"tickCount\": 3,\r\n    \"grid\": true,\r\n    \"gridColor\": \"#EDEDED\",\r\n    \"labelFlush\": false\r\n  },\r\n  \"axisX\": {\r\n    \"labelPadding\": 5\r\n  },\r\n  \"axisY\": {\r\n    \"labelPadding\": 10\r\n  },\r\n  \"header\": {\r\n    \"titleFont\": \"din\",\r\n    \"titleFontSize\": 16,\r\n    \"titleColor\": \"#192229\",\r\n    \"labelFont\": \"Segoe UI\",\r\n    \"labelFontSize\": 13.333333333333332,\r\n    \"labelColor\": \"#716E76\"\r\n  },\r\n  \"legend\": {\r\n    \"titleFont\": \"Segoe UI\",\r\n    \"titleFontWeight\": \"bold\",\r\n    \"titleColor\": \"#716E76\",\r\n    \"labelFont\": \"Segoe UI\",\r\n    \"labelFontSize\": 13.333333333333332,\r\n    \"labelColor\": \"#716E76\",\r\n    \"symbolType\": \"circle\",\r\n    \"symbolSize\": 75\r\n  }\r\n}",
+    "dataset": [
+      {
+        "key": "__0__",
+        "name": "Date",
+        "description": "Formatting of the date is set up to Month-Year by default. Please change the formatting of the X-axis labels + custom tooltip label if using another date interval.",
+        "kind": "column",
+        "type": "dateTime"
+      },
+      {
+        "key": "__1__",
+        "name": "Metric",
+        "description": "",
+        "kind": "measure",
+        "type": "numeric"
+      }
+    ]
+  },
+  "data": {
+    "name": "dataset"
+  },
+  "encoding": {
+    "y": {
+      "field": "__1__",
+      "type": "quantitative",
+      "axis": {
+        "labelOverlap": "greedy",
+        "tickCount": 6,
+        "grid": true,
+        "titleAngle": 0,
+        "titleAlign": "left",
+        "titleAnchor": "end",
+        "titleY": -10
+      }
+    },
+    "x": {
+      "field": "__0__",
+      "type": "temporal",
+      "axis": {
+        "format": "MMM yy",
+        "formatType": "pbiFormat",
+        "labelSeparation": 50,
+        "labelOverlap": true
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "area",
+        "interpolate": "cardinal",
+        "tension": 0.5,
+        "line": {
+          "color": {
+            "expr": "pbiColor(0)"
+          },
+          "opacity": 0.8,
+          "strokeWidth": 3
+        },
+        "fillOpacity": 1,
+        "color": {
+          "x1": 1,
+          "y1": 1,
+          "x2": 1,
+          "y2": 0,
+          "gradient": "linear",
+          "stops": [
+            {
+              "offset": 0,
+              "color": "white"
+            },
+            {
+              "offset": 1,
+              "color": "lightgray"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "params": [
+        {
+          "name": "hover",
+          "select": {
+            "type": "point",
+            "nearest": true,
+            "on": "pointerover",
+            "clear": "pointerout"
+          }
+        }
+      ],
+      "mark": {
+        "type": "bar",
+        "width": 1,
+        "color": "black"
+      },
+      "encoding": {
+        "opacity": {
+          "condition": {
+            "param": "hover",
+            "empty": false,
+            "value": 1
+          },
+          "value": 0
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "shape": "circle",
+        "color": {
+          "expr": "pbiColor(0)"
+        },
+        "tooltip": false
+      },
+      "encoding": {
+        "opacity": {
+          "condition": {
+            "test": {
+              "param": "hover",
+              "empty": false
+            },
+            "value": 1
+          },
+          "value": 0
+        },
+        "size": {
+          "condition": {
+            "test": {
+              "param": "hover",
+              "empty": false
+            },
+            "value": 200
+          },
+          "value": 400
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "rect",
+        "color": "white",
+        "width": 120,
+        "height": 50,
+        "yOffset": -42,
+        "cornerRadius": 10
+      },
+      "encoding": {
+        "opacity": {
+          "condition": {
+            "param": "hover",
+            "empty": false,
+            "value": 0.6
+          },
+          "value": 0
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "stroke": "black",
+        "strokeWidth": 0.5,
+        "color": "black",
+        "dy": -30,
+        "fontWeight": "bold",
+        "size": 20
+      },
+      "encoding": {
+        "text": {
+          "field": "__1__",
+          "type": "quantitative",
+          "format": "#,#",
+          "formatType": "pbiFormat"
+        },
+        "opacity": {
+          "condition": {
+            "param": "hover",
+            "empty": false,
+            "value": 1
+          },
+          "value": 0
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "color": "black",
+        "dy": -55,
+        "align": "center",
+        "fontWeight": "normal",
+        "size": 15
+      },
+      "encoding": {
+        "text": {
+          "field": "__0__",
+          "type": "temporal",
+          "format": "MMM yy",
+          "formatType": "pbiFormat"
+        },
+        "opacity": {
+          "condition": {
+            "param": "hover",
+            "empty": false,
+            "value": 1
+          },
+          "value": 0
+        }
+      }
+    }
+  ]
+}
