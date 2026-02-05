@@ -1,0 +1,402 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "information": {
+      "uuid": "41f9ae88-4697-4344-95be-36bab3d144b9",
+      "generated": "2026-02-05T12:06:30.135Z",
+      "previewImageBase64PNG": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+      "name": "deneb_hourly_heatmap_bars",
+      "description": "Hourly Heatmap with Bar Charts",
+      "author": "Clement Villalard"
+    },
+    "deneb": {
+      "build": "1.8.2.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    },
+    "config": "{\n  \"view\": {\n    \"stroke\": \"transparent\"\n  },\n  \"font\": \"Segoe UI\",\n  \"arc\": {},\n  \"area\": {\n    \"line\": true,\n    \"opacity\": 0.6\n  },\n  \"bar\": {},\n  \"line\": {\n    \"strokeWidth\": 0.5,\n    \"strokeCap\": \"round\",\n    \"strokeJoin\": \"round\",\n    \"grid\":true\n      },\n  \"point\": {\n    \"filled\": true,\n    \"size\": 75\n  },\n  \"rect\": {},\n  \"text\": {\n    \"font\": \"Segoe UI\",\n    \"fontSize\": 12,\n    \"fill\": \"#716E76\"\n  },\n  \"axis\": {\n    \"ticks\": false,\n    \"grid\": false,\n    \"domain\": false,\n    \"labelColor\": \"#716E76\",\n    \"labelFontSize\": 12,\n    \"titleFont\": \"din\",\n    \"titleColor\": \"#192229\",\n    \"titleFontSize\": 16,\n    \"titleFontWeight\": \"normal\"\n  },\n  \"axisQuantitative\": {\n    \"tickCount\": 3,\n    \"grid\": true,\n    \"gridColor\": \"#EDEDED\",\n    \"gridDash\": [\n      1,\n      5\n    ],\n    \"labelFlush\": false\n  },\n  \"axisX\": {\n    \"labelPadding\": 5\n  },\n  \"axisY\": {\n    \"labelPadding\": 10\n  },\n  \"header\": {\n    \"titleFont\": \"din\",\n    \"titleFontSize\": 16,\n    \"titleColor\": \"#192229\",\n    \"labelFont\": \"Segoe UI\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"#716E76\"\n  },\n  \"legend\": {\n    \"titleFont\": \"Segoe UI\",\n    \"titleFontWeight\": \"bold\",\n    \"titleColor\": \"#716E76\",\n    \"labelFont\": \"Segoe UI\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"#716E76\",\n    \"symbolType\": \"circle\",\n    \"symbolSize\": 75\n  },\n  \"concat\":{\n    \"spacing\":5\n  }\n}",
+    "dataset": [
+      {
+        "key": "__0__",
+        "name": "Date",
+        "description": "",
+        "kind": "column",
+        "type": "dateTime"
+      },
+      {
+        "key": "__1__",
+        "name": "Hour",
+        "description": "",
+        "kind": "column",
+        "type": "numeric"
+      },
+      {
+        "key": "__2__",
+        "name": "Value",
+        "description": "",
+        "kind": "measure",
+        "type": "numeric"
+      }
+    ]
+  },
+  "data": {
+    "name": "dataset"
+  },
+  "background": "white",
+  "params": [
+    {
+      "name": "scheme_name",
+      "value": "spectral"
+    },
+    {
+      "name": "corner_radius_value",
+      "value": 3
+    },
+    {
+      "name": "select_hour",
+      "select": {
+        "type": "point",
+        "fields": [
+          "__1__"
+        ]
+      }
+    },
+    {
+      "name": "select_day",
+      "select": {
+        "type": "point",
+        "fields": [
+          "Day of Month"
+        ]
+      }
+    }
+  ],
+  "transform": [
+    {
+      "calculate": "year(datum['__0__'])",
+      "as": "Year"
+    },
+    {
+      "calculate": "timeFormat(datum['__0__'], '%b')",
+      "as": "Month"
+    },
+    {
+      "calculate": "timeFormat(datum['__0__'], '%B')",
+      "as": "Month Name"
+    },
+    {
+      "calculate": "timeFormat(datum['__0__'], '%e')",
+      "as": "Day of Month"
+    },
+    {
+      "calculate": "timeFormat(datum['__0__'], '%a')",
+      "as": "Weekday Name"
+    },
+    {
+      "calculate": "timeFormat(datum['__0__'], '%A')",
+      "as": "Weekday Name Long"
+    },
+    {
+      "calculate": "timeFormat(datum['__0__'], '%b %y')",
+      "as": "Month Formatted"
+    }
+  ],
+  "vconcat": [
+    {
+      "height": 50,
+      "mark": {
+        "type": "bar",
+        "color": "slategray",
+        "cornerRadiusEnd": {
+          "expr": "corner_radius_value"
+        },
+        "cursor": "pointer"
+      },
+      "encoding": {
+        "x": {
+          "field": "__1__",
+          "type": "ordinal",
+          "axis": {
+            "labels": false,
+            "title": null
+          }
+        },
+        "y": {
+          "field": "__2__",
+          "aggregate": "sum",
+          "axis": {
+            "title": "__1__",
+            "titleAngle": 0,
+            "titleAnchor": "start",
+            "titleAlign": "right",
+            "titleX": -10,
+            "labels": false
+          }
+        },
+        "opacity": {
+          "condition": {
+            "param": "select_hour",
+            "value": 1
+          },
+          "value": 0.3
+        },
+        "tooltip": [
+          {
+            "field": "__1__",
+            "type": "quantitative"
+          },
+          {
+            "field": "__2__",
+            "aggregate": "sum",
+            "title": "__2__",
+            "type": "quantitative",
+            "format": "#,#",
+            "formatType": "pbiFormat"
+          }
+        ]
+      },
+      "params": [
+        {
+          "name": "select_hour",
+          "select": {
+            "type": "point",
+            "fields": [
+              "__1__"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "hconcat": [
+        {
+          "mark": {
+            "type": "rect",
+            "cornerRadius": {
+              "expr": "corner_radius_value"
+            },
+            "tooltip": true
+          },
+          "encoding": {
+            "detail": {
+              "field": "__2__",
+              "type": "quantitative"
+            },
+            "row": {
+              "field": "Month Formatted",
+              "title": null,
+              "sort": {
+                "field": "__0__"
+              },
+              "header": {
+                "labelAngle": 0,
+                "labelAlign": "left",
+                "labelAnchor": "end",
+                "labelFontWeight": "bold"
+              }
+            },
+            "tooltip": [
+              {
+                "field": "__0__",
+                "type": "temporal",
+                "format": "dd/MM/yyyy",
+                "formatType": "pbiFormat"
+              },
+              {
+                "field": "__1__",
+                "type": "quantitative"
+              },
+              {
+                "field": "Month Name",
+                "title": "Month",
+                "type": "nominal"
+              },
+              {
+                "field": "Weekday Name Long",
+                "title": "Weekday",
+                "type": "nominal"
+              },
+              {
+                "field": "__2__",
+                "type": "quantitative",
+                "format": "#,#",
+                "formatType": "pbiFormat"
+              }
+            ],
+            "x": {
+              "field": "__1__",
+              "title": "__1__",
+              "type": "ordinal",
+              "sort": {
+                "field": "__1__"
+              },
+              "scale": {
+                "padding": 0.1
+              },
+              "axis": {
+                "orient": "top",
+                "labelAngle": 0,
+                "titleAnchor": "start",
+                "titlePadding": 10,
+                "title": null
+              }
+            },
+            "y": {
+              "field": "Day of Month",
+              "type": "nominal",
+              "title": null,
+              "scale": {
+                "padding": 0.2
+              },
+              "axis": {
+                "orient": "left",
+                "labelOverlap": true,
+                "labelSeparation": 20,
+                "format": "d",
+                "formatType": "pbiFormat"
+              }
+            },
+            "color": {
+              "aggregate": "sum",
+              "field": "__2__",
+              "type": "quantitative",
+              "legend": {
+                "title": "__2__",
+                "type": "gradient",
+                "gradientLength": 400,
+                "direction": "horizontal",
+                "orient": "top",
+                "labelOverlap": true,
+                "labelSeparation": 5,
+                "padding": 10,
+                "cornerRadius": 5
+              },
+              "scale": {
+                "scheme": {
+                  "expr": "scheme_name"
+                },
+                "reverse": true
+              }
+            },
+            "opacity": {
+              "condition": [
+                {
+                  "param": "select_hour",
+                  "value": 1
+                },
+                {
+                  "param": "select_day",
+                  "value": 1
+                }
+              ],
+              "value": 0.2
+            }
+          },
+          "width": {
+            "step": 20
+          },
+          "height": {
+            "step": 10
+          }
+        },
+        {
+          "width": 50,
+          "height": {
+            "step": 10
+          },
+          "mark": {
+            "type": "bar",
+            "color": "slategray",
+            "cornerRadiusEnd": {
+              "expr": "corner_radius_value"
+            },
+            "cursor": "pointer"
+          },
+          "encoding": {
+            "row": {
+              "field": "Month Formatted",
+              "title": null,
+              "sort": {
+                "field": "__0__"
+              },
+              "header": {
+                "labels": false
+              }
+            },
+            "tooltip": [
+              {
+                "field": "__0__",
+                "type": "temporal",
+                "format": "dd/MM/yyyy",
+                "formatType": "pbiFormat"
+              },
+              {
+                "field": "Month Name",
+                "title": "Month",
+                "type": "nominal"
+              },
+              {
+                "field": "Weekday Name Long",
+                "title": "Weekday",
+                "type": "nominal"
+              },
+              {
+                "field": "__2__",
+                "aggregate": "sum",
+                "title": "__2__",
+                "type": "quantitative",
+                "format": "#,#",
+                "formatType": "pbiFormat"
+              }
+            ],
+            "x": {
+              "field": "__2__",
+              "aggregate": "sum",
+              "title": null,
+              "axis": {
+                "orient": "top",
+                "labels": false
+              }
+            },
+            "y": {
+              "field": "Day of Month",
+              "type": "nominal",
+              "title": null,
+              "scale": {
+                "padding": 0.2
+              },
+              "axis": null
+            },
+            "opacity": {
+              "condition": {
+                "param": "select_day",
+                "value": 1
+              },
+              "value": 0.3
+            }
+          },
+          "params": [
+            {
+              "name": "select_day",
+              "select": {
+                "type": "point",
+                "fields": [
+                  "Day of Month"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
