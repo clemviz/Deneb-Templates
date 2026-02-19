@@ -1,0 +1,210 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "information": {
+      "uuid": "68df5313-e567-48ba-9cf0-1105f6c748ec",
+      "generated": "2026-02-19T14:31:42.035Z",
+      "previewImageBase64PNG": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+      "name": "Linear Regression with pointer",
+      "description": "Linear Regression with pointer and equation displayed",
+      "author": "Clement Villalard"
+    },
+    "deneb": {
+      "build": "1.8.2.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    },
+    "config": "{\n  \"view\": {\n    \"stroke\": \"transparent\"\n  },\n  \"font\": \"Segoe UI\",\n  \"line\": {\n    \"strokeWidth\": 3,\n    \"strokeCap\": \"round\",\n    \"strokeJoin\": \"round\"\n  },\n  \"point\": {\n    \"filled\": true,\n    \"size\": 75\n  },\n  \"text\": {\n    \"font\": \"Segoe UI\",\n    \"fontSize\": 12,\n    \"fill\": \"#716E76\"\n  },\n  \"axis\": {\n    \"ticks\": false,\n    \"grid\": true,\n    \"domain\": false,\n    \"labelColor\": \"#716E76\",\n    \"labelFontSize\": 12,\n    \"titleFont\": \"din\",\n    \"titleColor\": \"#192229\",\n    \"titleFontSize\": 16,\n    \"titleFontWeight\": \"normal\"\n  },\n  \"axisQuantitative\": {\n    \"tickCount\": 3,\n    \"grid\": true,\n    \"gridColor\": \"#EDEDED\",\n    \"gridDash\": [\n      1,\n      1\n    ],\n    \"labelFlush\": false\n  },\n  \"axisX\": {\n    \"labelPadding\": 5\n  },\n  \"axisY\": {\n    \"labelPadding\": 10\n  },\n  \"header\": {\n    \"titleFont\": \"din\",\n    \"titleFontSize\": 16,\n    \"titleColor\": \"#192229\",\n    \"labelFont\": \"Segoe UI\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"#716E76\"\n  },\n  \"legend\": {\n    \"titleFont\": \"Segoe UI\",\n    \"titleFontWeight\": \"bold\",\n    \"titleColor\": \"#716E76\",\n    \"labelFont\": \"Segoe UI\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"#716E76\",\n    \"symbolType\": \"circle\",\n    \"symbolSize\": 75\n  }\n}",
+    "dataset": [
+      {
+        "key": "__0__",
+        "name": "Values",
+        "description": "Or Category",
+        "kind": "column",
+        "type": "text"
+      },
+      {
+        "key": "__1__",
+        "name": "Y",
+        "description": "",
+        "kind": "measure",
+        "type": "numeric"
+      },
+      {
+        "key": "__2__",
+        "name": "X",
+        "description": "",
+        "kind": "measure",
+        "type": "numeric"
+      }
+    ]
+  },
+  "data": {
+    "name": "dataset"
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 2,
+        "opacity": 0.8,
+        "color": {
+          "expr": "pbiColor(1)"
+        }
+      },
+      "transform": [
+        {
+          "regression": "__1__",
+          "method": "linear",
+          "on": "__2__"
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "__2__",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "__1__",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "params": [
+        {
+          "name": "highlight",
+          "select": {
+            "type": "point",
+            "on": "mouseover",
+            "clear": "mouseout"
+          }
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "tooltip": true,
+        "color": {
+          "expr": "pbiColor(0)"
+        }
+      },
+      "encoding": {
+        "x": {
+          "field": "__2__",
+          "type": "quantitative",
+          "axis": {
+            "titleAnchor": "start",
+            "tickCount": 20,
+            "ticks": true,
+            "labelSeparation": 20
+          }
+        },
+        "y": {
+          "field": "__1__",
+          "type": "quantitative",
+          "axis": {
+            "titleAnchor": "end",
+            "titleAngle": 0,
+            "titleAlign": "left",
+            "titleY": -5,
+            "tickCount": 20,
+            "ticks": true,
+            "labelSeparation": 20
+          }
+        },
+        "tooltip": [
+          {
+            "field": "__0__",
+            "type": "nominal"
+          },
+          {
+            "field": "__2__",
+            "type": "quantitative",
+            "format": "#,#.#",
+            "formatType": "pbiFormat"
+          },
+          {
+            "field": "__1__",
+            "type": "quantitative",
+            "format": "#,#.##",
+            "formatType": "pbiFormat"
+          }
+        ],
+        "size": {
+          "condition": [
+            {
+              "param": "highlight",
+              "empty": false,
+              "value": 200
+            }
+          ],
+          "value": 100
+        },
+        "stroke": {
+          "value": "black"
+        },
+        "strokeWidth": {
+          "condition": [
+            {
+              "param": "highlight",
+              "empty": false,
+              "value": 2
+            }
+          ],
+          "value": 0
+        },
+        "color": {
+          "condition": [
+            {
+              "param": "highlight",
+              "value": {
+                "expr": "pbiColor(0)"
+              }
+            }
+          ],
+          "value": "grey"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "regression": "__1__",
+          "method": "linear",
+          "on": "__2__",
+          "params": true
+        },
+        {
+          "calculate": "'y = ' + format(datum.coef[0], ',.0f') + (datum.coef[1] >= 0 ? ' + ' : ' - ') + format(abs(datum.coef[1]), ',.2f') + 'x  |  R² = ' + format(datum.rSquared, '.3f')",
+          "as": "equation"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontWeight": 500,
+        "color": {
+          "expr": "pbiColor(1)"
+        },
+        "x": "width",
+        "align": "right",
+        "y": -5
+      },
+      "encoding": {
+        "text": {
+          "type": "nominal",
+          "field": "equation"
+        }
+      }
+    }
+  ]
+}
