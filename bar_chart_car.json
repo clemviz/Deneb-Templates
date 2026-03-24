@@ -1,0 +1,166 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "information": {
+      "uuid": "220a8c7d-aa38-4da0-9a20-d8b63492241e",
+      "generated": "2026-03-24T11:49:43.745Z",
+      "previewImageBase64PNG": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+      "name": "bar_chart_car",
+      "description": "Fun bar chart with cars",
+      "author": "Clement Villalard"
+    },
+    "deneb": {
+      "build": "1.8.2.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    },
+    "config": "{\r\n  \"view\": {\r\n    \"stroke\": \"transparent\"\r\n  },\r\n  \"font\": \"Segoe UI\",\r\n  \"arc\": {},\r\n  \"area\": {\r\n    \"line\": true,\r\n    \"opacity\": 0.6\r\n  },\r\n  \"bar\": {},\r\n  \"line\": {\r\n    \"strokeWidth\": 3,\r\n    \"strokeCap\": \"round\",\r\n    \"strokeJoin\": \"round\"\r\n  },\r\n  \"point\": {\r\n    \"filled\": true,\r\n    \"size\": 75\r\n  },\r\n  \"rect\": {},\r\n  \"text\": {\r\n    \"font\": \"Segoe UI\",\r\n    \"fontSize\": 12,\r\n    \"fill\": \"#605E5C\"\r\n  },\r\n  \"axis\": {\r\n    \"ticks\": false,\r\n    \"grid\": false,\r\n    \"domain\": false,\r\n    \"labelColor\": \"#605E5C\",\r\n    \"labelFontSize\": 12,\r\n    \"titleFont\": \"din\",\r\n    \"titleColor\": \"#252423\",\r\n    \"titleFontSize\": 16,\r\n    \"titleFontWeight\": \"normal\"\r\n  },\r\n  \"axisQuantitative\": {\r\n    \"tickCount\": 3,\r\n    \"grid\": true,\r\n    \"gridColor\": \"#C8C6C4\",\r\n    \"gridDash\": [\r\n      1,\r\n      5\r\n    ],\r\n    \"labelFlush\": false\r\n  },\r\n  \"axisX\": {\r\n    \"labelPadding\": 5\r\n  },\r\n  \"axisY\": {\r\n    \"labelPadding\": 10\r\n  },\r\n  \"header\": {\r\n    \"titleFont\": \"din\",\r\n    \"titleFontSize\": 16,\r\n    \"titleColor\": \"#252423\",\r\n    \"labelFont\": \"Segoe UI\",\r\n    \"labelFontSize\": 13.333333333333332,\r\n    \"labelColor\": \"#605E5C\"\r\n  },\r\n  \"legend\": {\r\n    \"titleFont\": \"Segoe UI\",\r\n    \"titleFontWeight\": \"bold\",\r\n    \"titleColor\": \"#605E5C\",\r\n    \"labelFont\": \"Segoe UI\",\r\n    \"labelFontSize\": 13.333333333333332,\r\n    \"labelColor\": \"#605E5C\",\r\n    \"symbolType\": \"circle\",\r\n    \"symbolSize\": 75\r\n  }\r\n}",
+    "dataset": [
+      {
+        "key": "__0__",
+        "name": "Category",
+        "description": "",
+        "kind": "column",
+        "type": "text"
+      },
+      {
+        "key": "__1__",
+        "name": "Value",
+        "description": "",
+        "kind": "measure",
+        "type": "numeric"
+      }
+    ]
+  },
+  "data": {
+    "name": "dataset"
+  },
+  "encoding": {
+    "y": {
+      "field": "__0__",
+      "type": "nominal",
+      "scale": {
+        "padding": 0.9
+      },
+      "sort": {
+        "field": "__1__",
+        "order": "descending"
+      },
+      "axis": {
+        "title": null,
+        "domain": false,
+        "labelFontWeight": "bold"
+      }
+    },
+    "x": {
+      "field": "__1__",
+      "type": "quantitative",
+      "axis": null
+    },
+    "color": {
+      "field": "__0__",
+      "type": "nominal",
+      "legend": null,
+      "scale": {
+        "scheme": "observable10"
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rule",
+        "strokeDash": [
+          4,
+          4
+        ],
+        "strokeWidth": 2
+      }
+    },
+    {
+      "mark": {
+        "type": "bar",
+        "size": 50,
+        "filled": true,
+        "fillOpacity": 0.5,
+        "strokeOpacity": 0.5,
+        "opacity": 0.3
+      },
+      "encoding": {
+        "x": {
+          "field": "__1__"
+        }
+      }
+    },
+    {
+      "params": [
+        {
+          "name": "region_select",
+          "select": {
+            "type": "point",
+            "fields": [
+              "__0__"
+            ],
+            "on": "click"
+          }
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "shape": "M16,6l3,4h2c1.11,0,2,0.89,2,2v3h-2c0,1.66-1.34,3-3,3s-3-1.34-3-3H9c0,1.66-1.34,3-3,3s-3-1.34-3-3H1v-3c0-1.11,0.89-2,2-2 l3-4H16 M10.5,7.5H6.75L4.86,10h5.64V7.5 M12,7.5V10h5.14l-1.89-2.5H12 M6,13.5c-0.83,0-1.5,0.67-1.5,1.5s0.67,1.5,1.5,1.5 s1.5-0.67,1.5-1.5S6.83,13.5,6,13.5 M18,13.5c-0.83,0-1.5,0.67-1.5,1.5s0.67,1.5,1.5,1.5s1.5-0.67,1.5-1.5S18.83,13.5,18,13.5z",
+        "size": 50,
+        "filled": true,
+        "opacity": 1,
+        "xOffset": {
+          "value": -80
+        },
+        "yOffset": {
+          "value": -40
+        }
+      },
+      "encoding": {
+        "opacity": {
+          "condition": {
+            "param": "region_select",
+            "value": 1
+          },
+          "value": 0.2
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 5,
+        "baseline": "middle"
+      },
+      "encoding": {
+        "x": {
+          "field": "__1__",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "__1__",
+          "type": "quantitative"
+        },
+        "opacity": {
+          "condition": {
+            "param": "region_select",
+            "value": 1
+          },
+          "value": 0.2
+        }
+      }
+    }
+  ]
+}
