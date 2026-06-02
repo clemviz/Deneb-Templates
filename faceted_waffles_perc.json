@@ -1,0 +1,430 @@
+/* =====================================================================
+   WAFFLE CHART TEMPLATE — Deneb / Vega-Lite
+   -----------------------------------------------------------------------
+   REQUIRED FIELDS (rename in your Power BI dataset or update below):
+     • Qty   — numeric measure to convert to %
+     • Fruit — category dimension (rename to your category field)
+     • Year  — facet dimension (rename to your facet field, or remove facet)
+   
+   CUSTOMISE:
+     [1] Field names  → search "Fruit", "Year", "Qty" and replace all
+     [2] Colors       → "COLOR SCALE" section below
+     [3] Grid size    → "GRID CONFIG" section below
+     [4] Tooltip pos  → "TOOLTIP POSITION" comment
+   ===================================================================== */
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "usermeta": {
+    "information": {
+      "uuid": "d2bf9910-93cd-4dbf-a7b6-50939f70fe81",
+      "generated": "2026-06-02T10:28:09.564Z",
+      "previewImageBase64PNG": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+      "name": "Faceted waffles percentages",
+      "description": "Faceted Waffle Charts with ordinal/category field",
+      "author": "Clement Villalard"
+    },
+    "deneb": {
+      "build": "1.9.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    },
+    "config": "{\n  \"view\": {\n    \"stroke\": \"transparent\"\n  },\n  \"font\": \"Segoe UI, wf_segoe-ui_normal, helvetica, arial, sans-serif\",\n  \"arc\": {},\n  \"area\": {\n    \"line\": true,\n    \"opacity\": 0.6\n  },\n  \"bar\": {},\n  \"line\": {\n    \"strokeWidth\": 3,\n    \"strokeCap\": \"round\",\n    \"strokeJoin\": \"round\"\n  },\n  \"point\": {\n    \"filled\": true,\n    \"size\": 75\n  },\n  \"rect\": {},\n  \"text\": {\n    \"font\": \"Segoe UI, wf_segoe-ui_normal, helvetica, arial, sans-serif\",\n    \"fontSize\": 12,\n    \"fill\": \"#616161\"\n  },\n  \"axis\": {\n    \"ticks\": false,\n    \"grid\": false,\n    \"domain\": false,\n    \"labelColor\": \"#616161\",\n    \"labelFontSize\": 12,\n    \"titleFont\": \"din, wf_standard-font, helvetica, arial, sans-serif\",\n    \"titleColor\": \"#242424\",\n    \"titleFontSize\": 16,\n    \"titleFontWeight\": \"normal\"\n  },\n  \"axisQuantitative\": {\n    \"tickCount\": 3,\n    \"grid\": true,\n    \"gridColor\": \"#C7C7C7\",\n    \"gridDash\": [\n      1,\n      5\n    ],\n    \"labelFlush\": false\n  },\n  \"axisX\": {\n    \"labelPadding\": 5\n  },\n  \"axisY\": {\n    \"labelPadding\": 10\n  },\n  \"header\": {\n    \"titleFont\": \"din, wf_standard-font, helvetica, arial, sans-serif\",\n    \"titleFontSize\": 16,\n    \"titleColor\": \"#242424\",\n    \"labelFont\": \"Segoe UI, wf_segoe-ui_normal, helvetica, arial, sans-serif\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"#616161\"\n  },\n  \"legend\": {\n    \"titleFont\": \"Segoe UI, wf_segoe-ui_normal, helvetica, arial, sans-serif\",\n    \"titleFontWeight\": \"bold\",\n    \"titleColor\": \"#616161\",\n    \"labelFont\": \"Segoe UI, wf_segoe-ui_normal, helvetica, arial, sans-serif\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"#616161\",\n    \"symbolType\": \"circle\",\n    \"symbolSize\": 75\n  }\n}",
+    "dataset": [
+      {
+        "key": "__0__",
+        "name": "Ordinal/Categorical Field",
+        "description": "Any Ordinal or Categorical field such as Year, Region or Quarter",
+        "kind": "measure",
+        "type": "numeric"
+      },
+      {
+        "key": "__1__",
+        "name": "Category",
+        "description": "",
+        "kind": "column",
+        "type": "text"
+      },
+      {
+        "key": "__2__",
+        "name": "Value",
+        "description": "Value or Metric. Not a percentage",
+        "kind": "measure",
+        "type": "numeric"
+      }
+    ]
+  },
+  "data": {
+    "name": "dataset"
+  },
+  /* ---- [3] GRID CONFIG: change divisor (10) to adjust grid width ---- */
+  "transform": [
+    {
+      "joinaggregate": [
+        {
+          "op": "sum",
+          "field": "__2__",
+          "as": "yearTotal"
+        }
+      ],
+      "groupby": [
+        "__0__"
+      ]
+    },
+    {
+      "calculate": "datum['__2__']",
+      "as": "ActualQty"
+    },
+    // [FIX] Keep exact % first, don't round yet
+    {
+      "calculate": "datum['__2__'] / datum.yearTotal * 100",
+      "as": "PctExact"
+    },
+    // [FIX] Cumulative sum of exact %
+    {
+      "window": [
+        {
+          "op": "sum",
+          "field": "PctExact",
+          "as": "cumPctExact"
+        }
+      ],
+      "groupby": [
+        "__0__"
+      ],
+      "sort": [
+        {
+          "field": "__1__"
+        }
+      ]
+    },
+    {
+      "window": [
+        {
+          "op": "lag",
+          "field": "cumPctExact",
+          "as": "prevCumPctExact"
+        }
+      ],
+      "groupby": [
+        "__0__"
+      ],
+      "sort": [
+        {
+          "field": "__1__"
+        }
+      ]
+    },
+    // [FIX] Rounded count = floor(cumulative) - floor(previous cumulative)
+    {
+      "calculate": "datum.prevCumPctExact == null ? floor(datum.cumPctExact) : floor(datum.cumPctExact) - floor(datum.prevCumPctExact)",
+      "as": "__2__"
+    },
+    {
+      "calculate": "datum['__2__'] + '%'",
+      "as": "PctLabel"
+    },
+    // Rest unchanged — cumSum now operates on corrected integer Qty
+    {
+      "window": [
+        {
+          "op": "sum",
+          "field": "__2__",
+          "as": "cumSum"
+        }
+      ],
+      "groupby": [
+        "__0__"
+      ],
+      "sort": [
+        {
+          "field": "__1__"
+        }
+      ]
+    },
+    {
+      "window": [
+        {
+          "op": "lag",
+          "field": "cumSum",
+          "as": "prevSum"
+        }
+      ],
+      "groupby": [
+        "__0__"
+      ],
+      "sort": [
+        {
+          "field": "__1__"
+        }
+      ]
+    },
+    {
+      "calculate": "datum.prevSum == null ? 0 : datum.prevSum",
+      "as": "start"
+    },
+    {
+      "calculate": "sequence(datum.start, datum.cumSum)",
+      "as": "cells"
+    },
+    {
+      "flatten": [
+        "cells"
+      ]
+    },
+    {
+      "calculate": "datum.cells % 10",
+      "as": "col"
+    },
+    {
+      "calculate": "floor(datum.cells / 10)",
+      "as": "row"
+    }
+  ],
+  "facet": {
+    "field": "__0__",
+    "type": "ordinal",
+    "header": {
+      "title": null,
+      "labelFontSize": 13,
+      "labelOrient": "bottom",
+      "labelFontWeight": "bold"
+    }
+  },
+  "spec": {
+    "layer": [
+      {
+        "params": [
+          {
+            "name": "hovered",
+            "select": {
+              "type": "point",
+              "fields": [
+                "__1__"
+              ],
+              "on": "mouseover",
+              "clear": "mouseout"
+            }
+          }
+        ],
+        "mark": {
+          "type": "square",
+          "size": 200
+        },
+        "encoding": {
+          "x": {
+            "field": "col",
+            "type": "ordinal",
+            "axis": null,
+            "scale": {
+              "paddingOuter": 0.1
+            }
+          },
+          "y": {
+            "field": "row",
+            "type": "ordinal",
+            "sort": "descending",
+            "axis": null,
+            "scale": {
+              "paddingOuter": 0.1
+            }
+          },
+          "opacity": {
+            "condition": {
+              "param": "hovered",
+              "value": 0.8
+            },
+            "value": 0.2
+          },
+          /* ---- [2] COLOR SCALE ----------------------------------------
+               Option A — named scheme (default):
+                 "scale": { "scheme": "observable10" }
+               Option B — custom domain/range (uncomment and fill in):
+                 "scale": {
+                   "domain": ["Apple", "Banana", "Strawberry"],
+                   "range":  ["#8DB600", "#EF9F27", "#D4537E"]
+                 }
+          ------------------------------------------------------------- */
+          "color": {
+            "field": "__1__",
+            "type": "nominal",
+            "scale": {
+              "scheme": "observable10"
+            },
+            "legend": {
+              "title": null,
+              "orient": "top",
+              "symbolType": "square"
+            }
+          }
+        }
+      },
+      /* ---- TOOLTIP BACKGROUND ----------------------------------------
+           x/y are fixed pixels from the top-left of the facet panel.
+           Adjust if your panel dimensions change.
+      ------------------------------------------------------------- */
+      {
+        "transform": [
+          {
+            "filter": {
+              "param": "hovered",
+              "empty": false
+            }
+          },
+          {
+            "aggregate": [
+              {
+                "op": "max",
+                "field": "__1__",
+                "as": "__1__"
+              },
+              {
+                "op": "max",
+                "field": "__2__",
+                "as": "__2__"
+              }
+            ],
+            "groupby": [
+              "__0__"
+            ]
+          }
+        ],
+        "mark": {
+          "type": "rect",
+          "width": 75,
+          "height": 45,
+          "x": 90,
+          "y": 90,
+          "color": "white",
+          "opacity": 0.9,
+          "cornerRadius": 4
+        }
+      },
+      /* ---- TOOLTIP TEXT: percentage ---------------------------------- */
+      {
+        "transform": [
+          {
+            "filter": {
+              "param": "hovered",
+              "empty": false
+            }
+          },
+          {
+            "aggregate": [
+              {
+                "op": "max",
+                "field": "__1__",
+                "as": "__1__"
+              },
+              {
+                "op": "max",
+                "field": "PctLabel",
+                "as": "PctLabel"
+              },
+              {
+                "op": "max",
+                "field": "ActualQty",
+                "as": "ActualQty"
+              }
+            ],
+            "groupby": [
+              "__0__"
+            ]
+          }
+        ],
+        "mark": {
+          "type": "text",
+          "fontSize": 15,
+          "fontWeight": "bold",
+          "align": "center",
+          "baseline": "middle",
+          "x": 90,
+          "y": 82
+        },
+        "encoding": {
+          "text": {
+            "field": "PctLabel",
+            "type": "nominal"
+          },
+          "opacity": {
+            "condition": {
+              "param": "hovered",
+              "value": 1
+            },
+            "value": 0
+          },
+          "color": {
+            "field": "__1__",
+            "type": "nominal"
+          }
+        }
+      },
+      /* ---- TOOLTIP TEXT: actual quantity ----------------------------- */
+      {
+        "transform": [
+          {
+            "filter": {
+              "param": "hovered",
+              "empty": false
+            }
+          },
+          {
+            "aggregate": [
+              {
+                "op": "max",
+                "field": "__1__",
+                "as": "__1__"
+              },
+              {
+                "op": "max",
+                "field": "PctLabel",
+                "as": "PctLabel"
+              },
+              {
+                "op": "max",
+                "field": "ActualQty",
+                "as": "ActualQty"
+              }
+            ],
+            "groupby": [
+              "__0__"
+            ]
+          }
+        ],
+        "mark": {
+          "type": "text",
+          "fontSize": 12,
+          "color": "darkgrey",
+          "fontWeight": "normal",
+          "align": "center",
+          "baseline": "middle",
+          "x": 90,
+          "y": 100
+        },
+        "encoding": {
+          "text": {
+            "field": "ActualQty",
+            "type": "quantitative",
+            "format": "#,#",
+            "formatType": "pbiFormat"
+          },
+          "opacity": {
+            "condition": {
+              "param": "hovered",
+              "value": 1
+            },
+            "value": 0
+          }
+        }
+      }
+    ]
+  }
+}
