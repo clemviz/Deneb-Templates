@@ -1,0 +1,680 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "usermeta": {
+    "information": {
+      "uuid": "124c25da-ba00-4759-bd41-f675651b035d",
+      "generated": "2026-09-09T13:29:24.063Z",
+      "previewImageBase64PNG": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+      "name": "Calendar Heatmap Dynamic Legend",
+      "description": "[No Description Provided]",
+      "author": "Clement Villalard"
+    },
+    "deneb": {
+      "build": "1.9.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    },
+    "config": "{\n  \"view\": {\n    \"stroke\": \"transparent\"\n  },\n  \"font\": \"Segoe UI\",\n  \"arc\": {},\n  \"area\": {\n    \"line\": true,\n    \"opacity\": 0.6\n  },\n  \"bar\": {},\n  \"line\": {\n    \"strokeWidth\": 0.5,\n    \"strokeCap\": \"round\",\n    \"strokeJoin\": \"round\",\n    \"grid\":true\n      },\n  \"point\": {\n    \"filled\": true,\n    \"size\": 75\n  },\n  \"rect\": {},\n  \"text\": {\n    \"font\": \"Segoe UI\",\n    \"fontSize\": 12,\n    \"fill\": \"#716E76\"\n  },\n  \"axis\": {\n    \"ticks\": false,\n    \"grid\": false,\n    \"domain\": false,\n    \"labelColor\": \"#716E76\",\n    \"labelFontSize\": 12,\n    \"titleFont\": \"din\",\n    \"titleColor\": \"#192229\",\n    \"titleFontSize\": 16,\n    \"titleFontWeight\": \"normal\"\n  },\n  \"axisQuantitative\": {\n    \"tickCount\": 3,\n    \"grid\": true,\n    \"gridColor\": \"#EDEDED\",\n    \"gridDash\": [\n      1,\n      5\n    ],\n    \"labelFlush\": false\n  },\n  \"axisX\": {\n    \"labelPadding\": 5\n  },\n  \"axisY\": {\n    \"labelPadding\": 10\n  },\n  \"header\": {\n    \"titleFont\": \"din\",\n    \"titleFontSize\": 16,\n    \"titleColor\": \"#192229\",\n    \"labelFont\": \"Segoe UI\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"#716E76\"\n  },\n  \"legend\": {\n    \"titleFont\": \"Segoe UI\",\n    \"titleFontWeight\": \"bold\",\n    \"titleColor\": \"#716E76\",\n    \"labelFont\": \"Segoe UI\",\n    \"labelFontSize\": 13.333333333333332,\n    \"labelColor\": \"#716E76\",\n    \"symbolType\": \"circle\",\n    \"symbolSize\": 75\n  }\n}",
+    "dataset": [
+      {
+        "key": "__0__",
+        "name": "Date",
+        "description": "",
+        "kind": "column",
+        "type": "dateTime"
+      },
+      {
+        "key": "__1__",
+        "name": "Value/Field",
+        "description": "",
+        "kind": "measure",
+        "type": "numeric"
+      }
+    ]
+  },
+  "data": {
+    "name": "dataset"
+  },
+  "background": "white",
+  "params": [
+    {
+      "name": "scheme_name",
+      "value": "spectral"
+    },
+    {
+      "name": "corner_radius_value",
+      "value": 1
+    },
+    // --- Legend geometry ---------------------------------------------------
+    // IMPORTANT: the legend view's "height" further down must be kept equal to
+    // legend_thickness + label_lane. It is the one number that cannot be a
+    // param, because Vega-Lite only accepts a literal there.
+    {
+      "name": "legend_thickness",
+      "value": 20
+    }, // height of the colour strip
+    {
+      "name": "label_lane",
+      "value": 18
+    }, // reserved space above it
+    {
+      "name": "legend_corner_radius",
+      "value": 0
+    },
+    // --- Label -------------------------------------------------------------
+    {
+      "name": "label_gap",
+      "value": 4
+    }, // px between label and strip
+    {
+      "name": "label_size",
+      "value": 10
+    },
+    {
+      "name": "label_format",
+      "value": ",.0f"
+    },
+    // How close to an end (as a fraction of the strip) before the label stops
+    // centring and anchors its edge instead. Raise for longer labels.
+    {
+      "name": "label_flip_pct",
+      "value": 0.12
+    },
+    // --- Cursor ------------------------------------------------------------
+    // Half-width of the range cursor, as a fraction of the full value range.
+    {
+      "name": "highlight_pct",
+      "value": 0.05
+    },
+    {
+      "name": "band_stroke_width",
+      "value": 1.5
+    },
+    {
+      "name": "needle_width",
+      "value": 1.5
+    },
+    {
+      "name": "needle_halo_width",
+      "value": 4
+    },
+    // --- Dimming and cell border -------------------------------------------
+    {
+      "name": "heatmap_dim",
+      "value": 0.1
+    },
+    {
+      "name": "legend_dim",
+      "value": 0.35
+    },
+    {
+      "name": "cell_border_width",
+      "value": 1.5
+    },
+    {
+      "name": "cell_border_color",
+      "value": "black"
+    }
+  ],
+  "transform": [
+    {
+      "calculate": "year(datum['__0__'])",
+      "as": "Year"
+    },
+    {
+      "calculate": "timeFormat(datum['__0__'], '%b')",
+      "as": "Month"
+    },
+    {
+      "calculate": "timeFormat(datum['__0__'], '%B')",
+      "as": "Month Name"
+    },
+    {
+      "calculate": "(day(datum['__0__']) + 6) % 7",
+      "as": "Weekday"
+    },
+    {
+      "calculate": "timeFormat(datum['__0__'], '%a')",
+      "as": "Weekday Name"
+    },
+    {
+      "calculate": "timeFormat(datum['__0__'], '%A')",
+      "as": "Weekday Name Long"
+    },
+    {
+      "calculate": "timeFormat(datum['__0__'], '%m%W-%b')",
+      "as": "Month-Week"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "min",
+          "field": "__1__",
+          "as": "vmin"
+        },
+        {
+          "op": "max",
+          "field": "__1__",
+          "as": "vmax"
+        }
+      ]
+    }
+  ],
+  "resolve": {
+    "scale": {
+      "color": "shared"
+    }
+  },
+  "spacing": 20,
+  "vconcat": [
+    {
+      // --- Top Chart: Heatmap ---
+      "mark": {
+        "type": "rect",
+        "cornerRadius": {
+          "expr": "corner_radius_value"
+        },
+        "strokeJoin": "round",
+        "tooltip": true
+      },
+      "transform": [
+        // Where this cell sits along the strip, 0 = left end, 1 = right end.
+        // Drives the label's alignment, not its position.
+        {
+          "calculate": "(datum['__1__'] - datum.vmin) / (datum.vmax - datum.vmin)",
+          "as": "frac"
+        }
+      ],
+      "params": [
+        {
+          // values[0] = Cons(kWh), values[1] = frac
+          "name": "cell_hover",
+          "select": {
+            "type": "point",
+            "fields": [
+              "__1__",
+              "frac"
+            ],
+            "on": "mouseover",
+            "clear": "mouseout"
+          }
+        },
+        {
+          // No fields => matches the single mark under the pointer
+          "name": "cell_focus",
+          "select": {
+            "type": "point",
+            "on": "mouseover",
+            "clear": "mouseout"
+          }
+        }
+      ],
+      "encoding": {
+        "detail": [
+          {
+            "field": "__1__",
+            "type": "quantitative"
+          },
+          {
+            "field": "frac",
+            "type": "quantitative"
+          }
+        ],
+        "column": {
+          "field": "Year",
+          "type": "ordinal",
+          "spacing": 10,
+          "title": null,
+          "header": {
+            "labelFontWeight": "bold"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "__0__",
+            "type": "temporal",
+            "format": "dd/MM/yyyy",
+            "formatType": "pbiFormat"
+          },
+          {
+            "field": "Month Name",
+            "title": "Month",
+            "type": "nominal"
+          },
+          {
+            "field": "Weekday Name Long",
+            "title": "Weekday",
+            "type": "nominal"
+          },
+          {
+            "field": "__1__",
+            "type": "quantitative",
+            "format": "#,#",
+            "formatType": "pbiFormat"
+          }
+        ],
+        "x": {
+          "field": "Weekday Name",
+          "type": "ordinal",
+          "sort": {
+            "field": "Weekday"
+          },
+          "scale": {
+            "padding": 0.1
+          },
+          "axis": {
+            "title": null,
+            "orient": "top",
+            "labelAngle": 0,
+            "labelExpr": "substring(datum.label, 0, 1)"
+          }
+        },
+        "y": {
+          "field": "Month-Week",
+          "type": "ordinal",
+          "title": null,
+          "scale": {
+            "padding": 0.2
+          },
+          "axis": {
+            "labelOverlap": "greedy",
+            "labelFontWeight": "bold",
+            "labelSeparation": 30,
+            "labelExpr": "split(datum.label, '-')[1]"
+          }
+        },
+        "color": {
+          "aggregate": "sum",
+          "field": "__1__",
+          "legend": null,
+          "type": "quantitative",
+          "scale": {
+            "scheme": {
+              "expr": "scheme_name"
+            },
+            "reverse": true
+          }
+        },
+        "stroke": {
+          "condition": {
+            "param": "cell_focus",
+            "empty": false,
+            "value": {
+              "expr": "cell_border_color"
+            }
+          },
+          "value": "transparent"
+        },
+        "strokeWidth": {
+          "condition": {
+            "param": "cell_focus",
+            "empty": false,
+            "value": {
+              "expr": "cell_border_width"
+            }
+          },
+          "value": 0
+        },
+        "opacity": {
+          "condition": {
+            "test": "legend_hover.lo == null || (datum['__1__'] >= legend_hover.lo[0] && datum['__1__'] <= legend_hover.hi[0])",
+            "value": 1
+          },
+          "value": {
+            "expr": "heatmap_dim"
+          }
+        }
+      },
+      "width": {
+        "step": 20
+      },
+      "height": 500
+    },
+    {
+      // --- Bottom Chart: gradient legend + cursors ---
+      // height MUST equal legend_thickness + label_lane (20 + 18 = 38)
+      "view": {
+        "stroke": null
+      },
+      "width": 600,
+      "height": 38,
+      "title": {
+        "text": "Legend",
+        "color": "gray"
+      },
+      "layer": [
+        {
+          // Layer 1: the gradient, drawn as N abutting slices
+          "transform": [
+            // NOTE: sample only accepts a literal, so this one stays hardcoded.
+            // Aim for roughly (strip width / 3) slices.
+            {
+              "sample": 200
+            },
+            {
+              "joinaggregate": [
+                {
+                  "op": "count",
+                  "as": "n"
+                }
+              ]
+            },
+            {
+              "window": [
+                {
+                  "op": "row_number",
+                  "as": "i"
+                }
+              ]
+            },
+            {
+              "calculate": "(datum.vmax - datum.vmin) / datum.n",
+              "as": "step"
+            },
+            {
+              "calculate": "datum.vmin + (datum.i - 1) * datum.step",
+              "as": "Value"
+            },
+            {
+              "calculate": "datum.Value + datum.step * 1.02",
+              "as": "Value2"
+            },
+            {
+              "calculate": "highlight_pct * (datum.vmax - datum.vmin)",
+              "as": "halfw"
+            },
+            {
+              "calculate": "max(datum.vmin, datum.Value - datum.halfw)",
+              "as": "lo"
+            },
+            {
+              "calculate": "min(datum.vmax, datum.Value + datum.halfw)",
+              "as": "hi"
+            },
+            // True centre of the band - the label sits exactly here, always
+            {
+              "calculate": "(datum.lo + datum.hi) / 2",
+              "as": "mid"
+            },
+            {
+              "calculate": "(datum.mid - datum.vmin) / (datum.vmax - datum.vmin)",
+              "as": "frac"
+            }
+          ],
+          "mark": {
+            "type": "rect",
+            "stroke": null,
+            "clip": true,
+            "y": {
+              "expr": "label_lane"
+            },
+            "y2": {
+              "expr": "label_lane + legend_thickness"
+            }
+          },
+          "params": [
+            {
+              // values[0] = lo, values[1] = hi, values[2] = mid, values[3] = frac
+              "name": "legend_hover",
+              "select": {
+                "type": "point",
+                "fields": [
+                  "lo",
+                  "hi",
+                  "mid",
+                  "frac"
+                ],
+                "on": "mouseover",
+                "clear": "mouseout"
+              }
+            }
+          ],
+          "encoding": {
+            "x": {
+              "field": "Value",
+              "type": "quantitative",
+              "scale": {
+                "zero": false,
+                "nice": false
+              },
+              "axis": {
+                "title": null,
+                "grid": false,
+                "domain": false,
+                "ticks": true,
+                "labelOverlap": false,
+                "format": "#,#",
+                "formatType": "pbiFormat"
+              }
+            },
+            "x2": {
+              "field": "Value2"
+            },
+            "color": {
+              "field": "Value",
+              "type": "quantitative",
+              "legend": null,
+              "scale": {
+                "scheme": {
+                  "expr": "scheme_name"
+                },
+                "reverse": true
+              }
+            },
+            "opacity": {
+              "condition": {
+                "test": "legend_hover.lo == null || (datum.Value >= legend_hover.lo[0] && datum.Value <= legend_hover.hi[0])",
+                "value": 1
+              },
+              "value": {
+                "expr": "legend_dim"
+              }
+            }
+          }
+        },
+        {
+          // Layer 2: band outline, drawn from the selection store
+          "data": {
+            "name": "legend_hover_store"
+          },
+          "transform": [
+            {
+              "calculate": "datum.values[0]",
+              "as": "lo"
+            },
+            {
+              "calculate": "datum.values[1]",
+              "as": "hi"
+            }
+          ],
+          "mark": {
+            "type": "rect",
+            "fill": "white",
+            "fillOpacity": 0.15,
+            "stroke": "#111111",
+            "strokeWidth": {
+              "expr": "band_stroke_width"
+            },
+            "cornerRadius": {
+              "expr": "legend_corner_radius"
+            },
+            "clip": true,
+            "y": {
+              "expr": "label_lane"
+            },
+            "y2": {
+              "expr": "label_lane + legend_thickness"
+            }
+          },
+          "encoding": {
+            "x": {
+              "field": "lo",
+              "type": "quantitative"
+            },
+            "x2": {
+              "field": "hi"
+            }
+          }
+        },
+        {
+          // Layer 3: range readout. x is the TRUE band centre - no clamping.
+          // Near either end the text anchors its edge instead of its centre,
+          // which keeps it inside the view without moving it off the band.
+          "data": {
+            "name": "legend_hover_store"
+          },
+          "transform": [
+            {
+              "calculate": "datum.values[2]",
+              "as": "mid"
+            },
+            {
+              "calculate": "format(datum.values[0], label_format) + ' – ' + format(datum.values[1], label_format)",
+              "as": "label"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "fontSize": {
+              "expr": "label_size"
+            },
+            "fontWeight": "bold",
+            "color": "#111111",
+            "baseline": "bottom",
+            "y": {
+              "expr": "label_lane - label_gap"
+            },
+            "align": {
+              "expr": "legend_hover.frac == null ? 'center' : (legend_hover.frac[0] < label_flip_pct ? 'left' : (legend_hover.frac[0] > 1 - label_flip_pct ? 'right' : 'center'))"
+            }
+          },
+          "encoding": {
+            "x": {
+              "field": "mid",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "label",
+              "type": "nominal"
+            }
+          }
+        },
+        {
+          // Layer 4a: white halo behind the needle
+          "data": {
+            "name": "cell_hover_store"
+          },
+          "transform": [
+            {
+              "calculate": "datum.values[0]",
+              "as": "v"
+            }
+          ],
+          "mark": {
+            "type": "rule",
+            "stroke": "white",
+            "strokeWidth": {
+              "expr": "needle_halo_width"
+            },
+            "opacity": 0.9,
+            "clip": true,
+            "y": {
+              "expr": "label_lane"
+            },
+            "y2": {
+              "expr": "label_lane + legend_thickness"
+            }
+          },
+          "encoding": {
+            "x": {
+              "field": "v",
+              "type": "quantitative"
+            }
+          }
+        },
+        {
+          // Layer 4b: the needle - exact position of the hovered cell
+          "data": {
+            "name": "cell_hover_store"
+          },
+          "transform": [
+            {
+              "calculate": "datum.values[0]",
+              "as": "v"
+            }
+          ],
+          "mark": {
+            "type": "rule",
+            "stroke": "#111111",
+            "strokeWidth": {
+              "expr": "needle_width"
+            },
+            "clip": true,
+            "y": {
+              "expr": "label_lane"
+            },
+            "y2": {
+              "expr": "label_lane + legend_thickness"
+            }
+          },
+          "encoding": {
+            "x": {
+              "field": "v",
+              "type": "quantitative"
+            }
+          }
+        },
+        {
+          // Layer 5: readout for the hovered cell, same alignment logic
+          "data": {
+            "name": "cell_hover_store"
+          },
+          "transform": [
+            {
+              "calculate": "datum.values[0]",
+              "as": "v"
+            },
+            {
+              "calculate": "format(datum.values[0], label_format)",
+              "as": "label"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "fontSize": {
+              "expr": "label_size"
+            },
+            "fontWeight": "bold",
+            "color": "#111111",
+            "baseline": "bottom",
+            "y": {
+              "expr": "label_lane - label_gap"
+            },
+            "align": {
+              "expr": "cell_hover.frac == null ? 'center' : (cell_hover.frac[0] < label_flip_pct ? 'left' : (cell_hover.frac[0] > 1 - label_flip_pct ? 'right' : 'center'))"
+            }
+          },
+          "encoding": {
+            "x": {
+              "field": "v",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "label",
+              "type": "nominal"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
